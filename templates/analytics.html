@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics for {{ url_entry.short_code }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Analytics for <code>{{ url_entry.short_code }}</code></h1>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Back to Dashboard</a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3>{{ url_entry.clicks }}</h3>
+                <p class="text-muted">Total Clicks</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3>{{ url_entry.created_at.strftime('%Y-%m-%d') }}</h3>
+                <p class="text-muted">Created</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h6>Original URL</h6>
+                <p class="text-truncate"><small>{{ url_entry.original_url }}</small></p>
+                <h6>Short URL</h6>
+                <p><code>{{ request.host_url }}{{ url_entry.short_code }}</code></p>
+                <button class="btn btn-sm btn-outline-secondary" 
+                        onclick="navigator.clipboard.writeText('{{ request.host_url }}{{ url_entry.short_code }}')">
+                    <i class="fas fa-copy"></i> Copy Short URL
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Recent Clicks (Last 100)</h5>
+    </div>
+    <div class="card-body">
+        {% if click_events %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>IP Address</th>
+                        <th>Referrer</th>
+                        <th>User Agent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for click in click_events %}
+                    <tr>
+                        <td>{{ click.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ click.ip_address or 'N/A' }}</td>
+                        <td class="text-truncate" style="max-width: 200px;">
+                            {{ click.referrer or 'Direct' }}
+                        </td>
+                        <td class="text-truncate" style="max-width: 300px;">
+                            <small>{{ click.user_agent or 'Unknown' }}</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No clicks recorded yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

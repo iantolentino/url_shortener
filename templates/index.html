@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h1 class="text-center mb-4">Shorten Your URLs</h1>
+                <p class="text-center text-muted mb-4">Create short, memorable links and track their performance</p>
+                
+                <form method="POST" action="{{ url_for('shorten_url') }}">
+                    <div class="mb-3">
+                        <label for="url" class="form-label">Enter your long URL</label>
+                        <input type="url" class="form-control form-control-lg" id="url" name="url" 
+                               placeholder="https://example.com/very-long-url" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="custom_alias" class="form-label">Custom alias (optional)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">{{ request.host_url }}</span>
+                            <input type="text" class="form-control" id="custom_alias" name="custom_alias" 
+                                   placeholder="my-custom-link">
+                        </div>
+                        <div class="form-text">Leave blank for auto-generated code</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-link"></i> Shorten URL
+                    </button>
+                </form>
+
+                {% if short_url %}
+                <div class="alert alert-success mt-4">
+                    <h5>Your Short URL:</h5>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ short_url }}" id="shortUrl" readonly>
+                        <button class="btn btn-outline-success" type="button" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <small class="text-muted">Original: {{ original_url }}</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                    <h5>Analytics</h5>
+                    <p class="text-muted">Track clicks, referrers, and geographic data</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-user-cog fa-2x text-primary mb-2"></i>
+                    <h5>Custom Aliases</h5>
+                    <p class="text-muted">Create memorable custom short links</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-code fa-2x text-primary mb-2"></i>
+                    <h5>API Access</h5>
+                    <p class="text-muted">Integrate with our REST API</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
