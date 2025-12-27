@@ -4,7 +4,7 @@ A feature-rich, self-hosted URL shortener service built with Flask and SQLAlchem
 
 ## Features 
 
-- **URL Shortening**: Convert long URLs into short, manageable links
+- **URL Shortening**: Convert long URLs into short, manageable links 
 - **Custom Aliases**: Create custom short codes for your URLs
 - **Analytics Dashboard**: Track clicks, referrers, and user agents
 - **REST API**: Programmatic access to all features
@@ -250,4 +250,5 @@ For support and questions:
 ---
 
 Built with Flask, SQLAlchemy, and modern web standards.
+
 
